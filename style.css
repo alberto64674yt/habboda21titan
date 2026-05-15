@@ -1,0 +1,444 @@
+/* ==========================================================================
+   VARIABLES GLOBALES Y RESET (HABBO PIXEL MODERNO)
+   ========================================================================== */
+:root {
+    --bg-dark: #141d26; /* Fondo azul oscuro nocturno Habbo */
+    --bg-panel: #1f2c38; /* Fondo de ventanas (Gris azulado limpio) */
+    --primary: #2980b9; /* Azul Habbo clásico */
+    --primary-hover: #1f6391;
+    --secondary: #e74c3c;
+    --text-main: #FFFFFF;
+    --text-muted: #8c9ea8;
+    --border-color: #000000; /* Bordes sólidos negros estilo pixel art */
+    --gold: #f1c40f;
+    --font-main: 'Volter Goldfish', 'Ubuntu', 'Verdana', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Forzamos a que la letra se vea recta y crujiente, sin suavizado borroso */
+    -webkit-font-smoothing: none !important;
+    font-smooth: never !important;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow: hidden; /* Evitamos scroll general para el motor isométrico */
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    letter-spacing: 0.5px;
+}
+
+/* Clases de Utilidad */
+.hidden {
+    display: none !important;
+}
+
+/* ==========================================================================
+   MAGIA PIXEL MODERNA: OVERRIDES PARA HTML EN LÍNEA
+   ========================================================================== */
+/* Convertimos todos los fondos negros en cajas pixel-art modernas */
+div[style*="background: #1a1a1a"],
+div[style*="background: #111"],
+div[style*="background: #000"],
+div[style*="background: #0a0a0a"],
+.view-section div[style*="background: #1a1a1a"] {
+    background-color: var(--bg-panel) !important;
+    border: 2px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.4) !important; /* Sombra dura de píxel */
+}
+
+/* Botones limpios, planos, con borde negro y sombra dura estilo Stardew/Habbo */
+button {
+    border: 2px solid var(--border-color) !important;
+    border-radius: 4px !important;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.6) !important;
+    text-transform: uppercase;
+    font-weight: bold !important;
+    letter-spacing: 1px;
+    transition: transform 0.1s, box-shadow 0.1s !important;
+    font-family: var(--font-main) !important;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.5) !important;
+}
+
+/* Efecto de "Hundirse" al hacer clic */
+button:active {
+    transform: translate(2px, 2px) !important;
+    box-shadow: 0px 0px 0px rgba(0,0,0,1) !important;
+}
+
+/* Inputs y selects como cajas oscuras hundidas (ignorando barras deslizantes) */
+input:not([type="range"]), select {
+    background-color: #0b1116 !important;
+    border: 2px solid var(--border-color) !important;
+    color: var(--text-main) !important;
+    border-radius: 4px !important;
+    font-family: var(--font-main) !important;
+    padding: 10px !important;
+    box-shadow: inset 3px 3px 0px rgba(0,0,0,0.4) !important;
+}
+input:focus, select:focus {
+    border-color: var(--primary) !important;
+    outline: none;
+}
+
+/* ==========================================================================
+   SISTEMA DE IDIOMAS Y RADIO
+   ========================================================================== */
+#language-selector {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#lang-switch {
+    background-color: var(--bg-panel);
+    color: var(--text-main);
+    border: 2px solid var(--border-color) !important;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    box-shadow: 2px 2px 0px #000 !important;
+}
+
+#radio-widget {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 250px;
+    background-color: var(--bg-panel);
+    border: 2px solid var(--border-color);
+    border-radius: 4px;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+    z-index: 900;
+}
+
+.radio-header {
+    background-color: #12181e;
+    padding: 10px;
+    border-bottom: 2px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 4px 4px 0 0;
+}
+
+.drag-handle {
+    cursor: move;
+    color: var(--text-muted);
+}
+
+.radio-controls {
+    padding: 10px 15px 5px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.radio-controls button {
+    background: none !important;
+    border: none !important; 
+    box-shadow: none !important;
+    color: var(--text-main);
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.radio-controls button:active { transform: scale(0.9) !important; }
+#radio-vol { width: 80px; cursor: pointer; }
+
+/* Efecto Marquesina (Texto deslizante infinito) */
+.radio-track-container {
+    padding: 5px 10px 10px;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: bold;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.radio-track-scrolling {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 12s linear infinite;
+}
+
+@keyframes marquee {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* ==========================================================================
+   PANTALLA DE LOGIN / AUTH
+   ========================================================================== */
+#auth-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: radial-gradient(circle, #1f2c38 0%, #141d26 100%);
+}
+
+.auth-container {
+    background-color: var(--bg-panel);
+    padding: 40px;
+    border-radius: 4px;
+    border: 2px solid var(--border-color);
+    text-align: center;
+    width: 350px;
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
+}
+
+.auth-container h1 { margin-bottom: 5px; color: var(--primary); text-shadow: 2px 2px 0px #000; }
+.auth-container p { margin-bottom: 20px; color: var(--text-muted); font-size: 12px; }
+
+.auth-buttons { display: flex; gap: 10px; }
+.auth-buttons button { flex: 1; padding: 12px; }
+
+#btn-login { background-color: var(--primary); color: white; }
+#btn-login:hover { background-color: var(--primary-hover); }
+#btn-register { background-color: #34495e; color: white; }
+#btn-register:hover { background-color: #2c3e50; }
+
+.error-msg { color: var(--secondary); font-size: 12px; margin-top: 15px; height: 15px; font-weight: bold; }
+
+/* ==========================================================================
+   LOBBY PRINCIPAL Y CABECERA
+   ========================================================================== */
+#lobby-screen { display: flex; flex-direction: column; height: 100vh; }
+
+.lobby-header {
+    background-color: var(--bg-panel);
+    border-bottom: 2px solid var(--border-color);
+    padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 0 4px 0px rgba(0,0,0,0.3);
+    z-index: 50;
+}
+
+.user-info { display: flex; align-items: center; gap: 15px; }
+.avatar-box {
+    width: 50px; height: 50px; background-color: #0b1116; border: 2px solid var(--border-color);
+    border-radius: 4px; overflow: hidden; display: flex; justify-content: center; align-items: center;
+    box-shadow: inset 2px 2px 0px rgba(0,0,0,0.5);
+}
+.avatar-box img { height: 150%; margin-top: -15px; }
+.user-data #user-name { font-weight: bold; font-size: 16px; text-shadow: 1px 1px 0px #000; }
+.wallet { color: var(--gold); font-size: 12px; margin-top: 3px; font-weight: bold; text-shadow: 1px 1px 0px #000; }
+
+.main-menu { display: flex; gap: 5px; } /* Reducimos el hueco entre botones a la mitad */
+.main-menu button {
+    background-color: #12181e; color: white;
+    padding: 7px 10px; /* Reducimos el aire interno de los botones */
+    font-size: 11px; /* Letra un milímetro más pequeña */
+    letter-spacing: 0px; /* Juntamos las letras para ahorrar MUCHO espacio horizontal */
+}
+.main-menu button:hover, .main-menu button.active-nav {
+    background-color: var(--primary);
+}
+
+/* Forzamos también a que los botones de la derecha (Apoyar, Salir, Idioma) se compriman */
+.header-options { gap: 5px !important; }
+.header-options button { padding: 6px 10px !important; font-size: 11px !important; letter-spacing: 0px !important; }
+
+/* ==========================================================================
+   ÁREA DINÁMICA (Vistas Modulares)
+   ========================================================================== */
+#content-area {
+    flex: 1; padding: 30px; display: flex; justify-content: center; align-items: center;
+    position: relative; overflow-y: auto;
+}
+
+.view-section { width: 100%; max-width: 1000px; }
+
+/* Estilos de Tienda (Preparados para shop.js) */
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; margin-top: 20px; }
+.shop-item { 
+    background: #12181e !important; 
+    border: 2px solid var(--border-color) !important; 
+    border-radius: 4px !important; 
+    padding: 15px; 
+    text-align: center;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5) !important;
+}
+
+/* ==========================================================================
+   INVENTARIO (Barra Inferior)
+   ========================================================================== */
+#inventory-bar {
+    background-color: var(--bg-panel); height: 120px; border-top: 2px solid var(--border-color);
+    display: flex; flex-direction: column; z-index: 50; box-shadow: 0 -4px 0px rgba(0,0,0,0.3);
+}
+.inventory-header {
+    background-color: #12181e; padding: 5px 15px; font-size: 12px;
+    font-weight: bold; color: var(--text-muted); border-bottom: 2px solid var(--border-color);
+}
+.inventory-slots {
+    flex: 1; display: flex; padding: 10px; gap: 10px; overflow-x: auto; align-items: center;
+}
+.item-slot {
+    min-width: 60px; height: 60px; background-color: #0b1116; border: 2px solid var(--border-color);
+    border-radius: 4px; display: flex; justify-content: center; align-items: center; cursor: grab;
+    box-shadow: inset 2px 2px 0px rgba(0,0,0,0.5);
+}
+.item-slot:hover { border-color: var(--primary); }
+
+/* ==========================================================================
+   ESTILOS EDITOR PRO (LIMPIO)
+   ========================================================================== */
+.generador-container { background: var(--bg-panel); padding: 20px; border-radius: 4px; border: 2px solid var(--border-color); width: 100%; max-width: 650px; margin: 0 auto; color: white; box-shadow: 6px 6px 0px rgba(0,0,0,0.5); }
+.main-navigation ul { list-style: none; display: flex; gap: 10px; padding: 0; margin-bottom: 15px; justify-content: center; }
+.main-navigation li a { display: block; padding: 8px; background: #0b1116; border-radius: 4px; border: 2px solid var(--border-color); box-shadow: 2px 2px 0px rgba(0,0,0,0.8); transition: 0.1s;}
+.main-navigation li.active a { background: var(--primary); border-color: #000; transform: translate(2px,2px); box-shadow: 0px 0px 0px #000;}
+
+.sub-navigation ul { list-style: none; gap: 10px; padding: 0; margin-bottom: 15px; justify-content: center; }
+.sub-navigation ul.hidden { display: none !important; }
+.sub-navigation a { display: block; border-radius: 4px; padding: 2px; transition: 0.2s; border: 2px solid transparent;}
+.sub-navigation a img { width: 35px; height: 35px; filter: grayscale(100%); opacity: 0.5; transition: 0.2s; display: block; }
+.sub-navigation a.nav-selected, .sub-navigation a:hover { border-color: var(--primary); background: #0b1116;}
+.sub-navigation a.nav-selected img, .sub-navigation a:hover img { filter: grayscale(0%); opacity: 1; }
+
+#clothes-colors { background: #0b1116; padding: 15px; border-radius: 4px; border: 2px solid var(--border-color); height: 250px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; margin-bottom: 15px; box-shadow: inset 3px 3px 0px rgba(0,0,0,0.5);}
+#colors { display: flex; flex-wrap: wrap; gap: 4px; }
+#clothes { display: flex; flex-wrap: wrap; gap: 8px; }
+.color-object { width: 22px; height: 22px; border-radius: 2px; border: 2px solid var(--border-color); cursor: pointer; }
+.color-object:hover { border-color: white; }
+.clothes-object { width: 50px; height: 55px; background-position: center -10px; background-repeat: no-repeat; cursor: pointer; border-radius: 4px; border: 2px solid var(--border-color); background-color: #1a252f;}
+.clothes-object.selected { background-color: #12181e; border-color: var(--primary); box-shadow: 2px 2px 0px #000;}
+
+#avatar { display: flex; justify-content: space-around; align-items: center; background: #0b1116; padding: 20px; border-radius: 4px; border: 2px solid var(--border-color); box-shadow: inset 3px 3px 0px rgba(0,0,0,0.5);}
+#avatar img { transform: scale(1.2); }
+.avatar-controls { display: flex; flex-direction: column; gap: 10px; width: 60%; }
+#btn-descargar-pro { background: #2ecc71; color: white; padding: 12px; font-size: 14px; }
+#btn-descargar-pro:hover { background: #27ae60; }
+
+/* ==========================================================================
+   ARENA TITÁN (FASE 4)
+   ========================================================================== */
+.arena-tabs { 
+    display: flex; 
+    border-bottom: 2px solid var(--border-color); 
+    margin-bottom: 20px; 
+    background: #12181e;
+    border-radius: 4px 4px 0 0;
+}
+.arena-tab-btn { 
+    flex: 1; 
+    background: transparent; 
+    color: var(--text-muted); 
+    border: none !important; 
+    padding: 15px; 
+    cursor: pointer; 
+    font-size: 14px; 
+    border-bottom: 4px solid transparent !important; 
+    transition: 0.2s; 
+    box-shadow: none !important;
+}
+.arena-tab-btn:hover { 
+    background: rgba(255,255,255,0.05); 
+    color: var(--text-main); 
+}
+.arena-tab-btn.active { 
+    color: var(--gold); 
+    border-bottom-color: var(--gold) !important; 
+    background: rgba(241, 196, 15, 0.1); 
+}
+.admin-tab-btn { 
+    flex: 1; background: transparent; color: var(--text-muted); border: none !important; box-shadow: none !important; padding: 15px; cursor: pointer; font-size: 14px; font-weight: bold; border-bottom: 4px solid transparent !important; transition: 0.2s; 
+}
+.admin-tab-btn:hover { background: rgba(255,255,255,0.05); color: var(--text-main); }
+.admin-tab-btn.active { color: #8e44ad; border-bottom-color: #8e44ad !important; background: rgba(142, 68, 173, 0.1); }
+
+.arena-list { display: flex; flex-direction: column; gap: 10px; }
+.arena-match-card { 
+    background: #1a252f; 
+    border: 2px solid var(--border-color); 
+    border-radius: 4px; 
+    padding: 15px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
+}
+
+/* Items pequeños para la mesa de apuestas */
+.bet-item { 
+    width: 40px; 
+    height: 40px; 
+    object-fit: contain; 
+    background: #0b1116; 
+    border-radius: 4px; 
+    border: 2px solid #000; 
+}
+
+/* Dados interactivos */
+.duel-dice { 
+    width: 64px; 
+    height: 64px; 
+    background-color: #0b1116; 
+    border: 2px solid #000;
+    border-radius: 4px;
+    cursor: pointer; 
+    box-shadow: 4px 4px 0px #000;
+    transition: transform 0.1s, box-shadow 0.1s; 
+}
+.duel-dice:active { transform: translate(4px, 4px); box-shadow: 0px 0px 0px #000; }
+.duel-dice.locked { filter: grayscale(1) brightness(0.5); cursor: not-allowed; }
+
+/* ==========================================================================
+   ESTILOS DE TIENDA DINÁMICA Y PANEL ADMIN
+   ========================================================================== */
+.shop-item.sold-out {
+    filter: grayscale(100%) opacity(0.6);
+    pointer-events: none;
+    position: relative;
+}
+
+.sold-out-badge {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    background: #e74c3c;
+    color: white;
+    font-weight: bold;
+    padding: 5px 15px;
+    border: 2px solid #000;
+    border-radius: 4px;
+    font-size: 14px;
+    text-shadow: 2px 2px 0 #000;
+    z-index: 10;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+}
+
+.admin-input {
+    width: 100%; padding: 10px; margin-bottom: 10px;
+    background-color: #0b1116 !important; border: 2px solid #000 !important; color: white !important; border-radius: 4px !important;
+    box-shadow: inset 3px 3px 0px rgba(0,0,0,0.5) !important;
+}
+.autocomplete-list {
+    background: #1f2c38; border: 2px solid #000; max-height: 150px; overflow-y: auto; border-radius: 4px; box-shadow: 4px 4px 0px rgba(0,0,0,0.5);
+}
+.autocomplete-list div {
+    padding: 8px; cursor: pointer; border-bottom: 2px solid #000;
+}
+.autocomplete-list div:hover { background: var(--primary); }
+
+/* Arreglo para que las Notificaciones (Toasts) también encajen con el Pixel Art */
+#toast-container div {
+    border: 2px solid #000 !important;
+    border-radius: 4px !important;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.6) !important;
+}
