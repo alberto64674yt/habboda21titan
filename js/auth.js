@@ -129,10 +129,13 @@ const Auth = {
             document.getElementById('auth-screen').classList.add('hidden');
             document.getElementById('lobby-screen').classList.remove('hidden');
             
-            // MOSTRAR LA RADIO AUTOMÁTICAMENTE AL LOGUEAR
+            // MOSTRAR LA RADIO AL LOGUEAR (Solo si el jugador no la cerró antes)
             const radioWidget = document.getElementById('radio-widget');
             if (radioWidget) {
-                radioWidget.classList.remove('hidden');
+                const isClosed = localStorage.getItem('radio_closed');
+                if (isClosed !== 'true') {
+                    radioWidget.classList.remove('hidden');
+                }
             }
 
             if (window.Router) Router.init();
