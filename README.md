@@ -1,4 +1,4 @@
-# 🎲 Habbo Da21 Titán
+# <img src="https://habboda21titan.netlify.app/favicon-96x96.png" width="48" height="48" align="center"> Habbo Da21 Titán
 
 🇪🇸 **El servidor definitivo de apuestas y minijuegos pixel-art.** Habbo Da21 Titán es un proyecto PWA 100% gratuito creado por la comunidad. Juega a la Ruleta, el Holodado, haz clic en el Clicker Titán y retate en la Arena Isométrica. 
 * 🛠️ **Stack:** HTML5, CSS3, Vanilla JS & Supabase.
