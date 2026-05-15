@@ -46,9 +46,8 @@ const HabboRadio = {
         const widget = document.getElementById("radio-widget");
         if (!widget) return;
 
-        // 1. Verificar si el usuario cerró la radio anteriormente
-        const isClosed = localStorage.getItem('radio_closed');
-        if (isClosed !== 'true') widget.classList.remove('hidden');
+        // 1. Forzamos a que siempre empiece oculta (auth.js decidirá cuándo mostrarla)
+        widget.classList.add('hidden');
 
         // 2. Cargar la primera canción (Pausada por defecto)
         this.loadTrack(0);
