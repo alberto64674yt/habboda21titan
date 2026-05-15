@@ -1,5 +1,5 @@
 // sw.js - Service Worker para Habbo Da21 Titan
-const CACHE_NAME = 'da21-titan-v1';
+const CACHE_NAME = 'da21-titan-v2';
 
 // Solo cacheamos lo básico para que sea instalable sin romper la lógica de Supabase
 self.addEventListener('install', (e) => {
