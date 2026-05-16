@@ -617,7 +617,8 @@ const ArenaGame = {
             window.showToast(msg, 'reward');
             
             if (!alreadyPaid) {
-                if (this.matchData && this.matchData.id && this.mode !== 'ia') {
+                // FIX 1: Le quitamos el "&& this.mode !== 'ia'" para que si le ganas a la IA, la partida se cierre.
+                if (this.matchData && this.matchData.id) {
                     await db.from('arena_matches').update({ status: 'finished' }).eq('id', this.matchData.id);
                 }
                 await this.rewardWinner();
@@ -631,7 +632,6 @@ const ArenaGame = {
                         await db.from('users').update({ arena_wins: (userData.arena_wins || 0) + 1 }).eq('id', this.myId);
                         
                         const rivalName = document.getElementById('duel-p2-name').textContent || 'Rival';
-                        // El bote total es lo que apostó el host + lo que apostó el guest (x2)
                         const totalPot = (this.matchData.bet_amount || 0) * 2;
                         if (typeof ActivityFeed !== 'undefined' && totalPot > 0) {
                             ActivityFeed.sendActivity({
@@ -646,6 +646,11 @@ const ArenaGame = {
             }
         } else if (result === 'lose') {
             window.showToast(isEn ? 'You lost the bet. The items have vanished.' : 'Has perdido la apuesta. Los objetos se han esfumado.', 'error');
+            
+            // FIX 2: Si perdemos contra la IA, como ella no puede cerrar la partida, la cerramos nosotros.
+            if (this.matchData && this.matchData.id && this.mode === 'ia') {
+                await db.from('arena_matches').update({ status: 'finished' }).eq('id', this.matchData.id);
+            }
         }
 
         document.getElementById('duel-arena-section').classList.add('hidden');
