@@ -4,7 +4,7 @@
 // cambia esta variable (ej: a 'da21-titan-v2') para que los jugadores 
 // reciban la actualización y no se queden con la versión vieja cacheada.
 // =========================================================================
-const CACHE_NAME = 'da21-titan-v5';
+const CACHE_NAME = 'da21-titan-v6';
 
 // Lista de archivos vitales a cachear
 const ASSETS_TO_CACHE = [
