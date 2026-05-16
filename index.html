@@ -174,10 +174,22 @@
                 </div>
 
                 <div id="imager-section" class="hidden" style="text-align: center;">
-                    <h3 id="text-imager-title">Importar desde Habbo.es</h3>
-                    <input type="text" id="habbo-name-input" placeholder="Nombre en Habbo" style="padding: 10px; background: #1a1a1a; color: white; border: 1px solid #444; width: 250px;">
-                    <br><br>
-                    <button id="btn-save-imager" style="padding: 10px 20px; background: #3498db; color: white; border: none; cursor: pointer;">Guardar Nombre</button>
+                    <h3 id="text-imager-title">Importar Avatar de Habbo</h3>
+                    <div style="display: flex; justify-content: center; gap: 5px; margin-bottom: 15px;">
+                        <select id="habbo-hotel-select" style="padding: 10px; background: #222; color: white; border: 1px solid #444; border-radius: 4px;">
+                            <option value="es" selected>🇪🇸 .es</option>
+                            <option value="com.br">🇧🇷 .com.br</option>
+                            <option value="com">🇺🇸/🇬🇧 .com</option>
+                            <option value="fi">🇫🇮 .fi</option>
+                            <option value="it">🇮🇹 .it</option>
+                            <option value="nl">🇳🇱 .nl</option>
+                            <option value="fr">🇫🇷 .fr</option>
+                            <option value="de">🇩🇪 .de</option>
+                            <option value="com.tr">🇹🇷 .com.tr</option>
+                        </select>
+                        <input type="text" id="habbo-name-input" placeholder="Nombre de Keko" style="padding: 10px; background: #1a1a1a; color: white; border: 1px solid #444; width: 200px; border-radius: 4px;">
+                    </div>
+                    <button id="btn-save-imager" style="padding: 10px 20px; background: #3498db; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold;">Guardar Nombre</button>
                 </div>
 
                 <div id="editor-section" class="hidden">
