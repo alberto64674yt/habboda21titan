@@ -119,7 +119,7 @@ const LanguageManager = {
         'btn-mode-imager': { es: 'Importar Nombre Habbo', en: 'Import Habbo Name' },
         'btn-mode-editor': { es: 'Abrir Editor Avanzado', en: 'Open Pro Editor' },
         'habbo-name-input': { es: 'Nombre en Habbo', en: 'Habbo Username' },
-        'text-imager-title': { es: 'Importar desde Habbo.es', en: 'Import from Habbo.es' },
+        'text-imager-title': { es: 'Importar Avatar de Habbo', en: 'Import Habbo Avatar' },
         'text-editor-title': { es: 'Creador de Kekos 2.0 (Pro)', en: 'Avatar Builder 2.0 (Pro)' },
         'btn-save-imager': { es: 'Guardar Nombre', en: 'Save Username' },
         'btn-descargar-pro': { es: 'Guardar Avatar', en: 'Save Avatar' },

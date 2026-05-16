@@ -2,6 +2,36 @@
    js/app.js - CONFIGURACIÓN GLOBAL Y RADIO
    ========================================================================== */
 
+// UTILIDAD GLOBAL: Generador de enlaces de avatar para múltiples hoteles
+window.getAvatarUrl = function(lookString, action = 'sit,wav', headOnly = false) {
+    if (!lookString) return 'https://www.habbo.es/habbo-imaging/avatarimage?user=Guest';
+
+    // 1. Si es ropa del editor PRO (contiene guiones y no tiene ":")
+    if (lookString.includes('-') && !lookString.includes(':')) {
+        let url = `https://www.habbo.es/habbo-imaging/avatarimage?figure=${lookString}`;
+        if (headOnly) url += '&head_direction=3&direction=3&headonly=1';
+        else url += `&action=${action}`;
+        return url;
+    }
+
+    // 2. Si es un nombre de usuario importado
+    let hotel = 'es'; // Por defecto (para los usuarios antiguos)
+    let username = lookString;
+
+    // Si trae el prefijo de nuestro nuevo selector (ej: "com.br:lupobalt780")
+    if (lookString.includes(':')) {
+        const parts = lookString.split(':');
+        hotel = parts[0];
+        username = parts[1];
+    }
+
+    let url = `https://www.habbo.${hotel}/habbo-imaging/avatarimage?user=${username}`;
+    if (headOnly) url += '&head_direction=3&direction=3&headonly=1';
+    else url += `&action=${action}`;
+    
+    return url;
+};
+
 /* --------------------------------------------------------------------------
    1. HABBO RADIO TITÁN - MOTOR MUSICAL
    -------------------------------------------------------------------------- */
@@ -184,10 +214,7 @@ async function loadLeaderboards() {
             const row = document.createElement('div');
             row.style = "display: flex; justify-content: space-between; align-items: center; background: #111; padding: 8px 15px; margin-bottom: 8px; border-radius: 5px; border: 1px solid #333;";
             
-            const isCustom = user.look_string && user.look_string.includes('-');
-            const imgUrl = isCustom 
-                ? `https://www.habbo.es/habbo-imaging/avatarimage?figure=${user.look_string}&head_direction=3&direction=3&headonly=1`
-                : `https://www.habbo.es/habbo-imaging/avatarimage?user=${user.look_string}&head_direction=3&direction=3&headonly=1`;
+            const imgUrl = window.getAvatarUrl(user.look_string, '', true);
 
             const medalColor = index === 0 ? '#f1c40f' : (index === 1 ? '#bdc3c7' : (index === 2 ? '#cd7f32' : '#777'));
 

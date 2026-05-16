@@ -133,11 +133,8 @@ const RouletteGame = {
         if (user) {
             const { data } = await db.from('users').select('look_string').eq('id', user.id).single();
             if (data && data.look_string) {
-                const isCustom = data.look_string.includes('-');
-                // direction=7 es Noroeste (Mirando directo a la pared izquierda)
-                this.avatarImg.src = isCustom 
-                    ? `https://www.habbo.es/habbo-imaging/avatarimage?figure=${data.look_string}&direction=6&head_direction=6&action=std`
-                    : `https://www.habbo.es/habbo-imaging/avatarimage?user=${data.look_string}&direction=6&head_direction=6&action=std`;
+                // direction=6 es Noroeste (Mirando directo a la pared izquierda)
+                this.avatarImg.src = window.getAvatarUrl(data.look_string, 'std&direction=6&head_direction=6');
                 this.avatarImg.onload = () => this.drawScene();
             }
         }
@@ -677,11 +674,8 @@ const HoloDiceGame = {
         if (user) {
             const { data } = await db.from('users').select('look_string').eq('id', user.id).single();
             if (data && data.look_string) {
-                const isCustom = data.look_string.includes('-');
-                // REVERTIMOS A LA DIRECCIÓN 6 (Igual que en la Ruleta)
-                this.avatarImg.src = isCustom 
-                    ? `https://www.habbo.es/habbo-imaging/avatarimage?figure=${data.look_string}&direction=2&head_direction=2&action=std`
-                    : `https://www.habbo.es/habbo-imaging/avatarimage?user=${data.look_string}&direction=2&head_direction=2&action=std`;
+                // REVERTIMOS A LA DIRECCIÓN 2
+                this.avatarImg.src = window.getAvatarUrl(data.look_string, 'std&direction=2&head_direction=2');
                 this.avatarImg.onload = () => this.drawScene();
             }
         }

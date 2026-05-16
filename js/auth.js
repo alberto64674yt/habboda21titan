@@ -120,9 +120,8 @@ const Auth = {
             document.getElementById('user-name').textContent = data.username;
             document.getElementById('user-credits').textContent = data.credits;
             
-            let avatarImg = data.look_string && data.look_string.includes("-")
-                ? `https://www.habbo.es/habbo-imaging/avatarimage?figure=${data.look_string}&action=sit,wav`
-                : `https://www.habbo.es/habbo-imaging/avatarimage?user=${data.look_string}&action=sit,wav`;
+            // Usamos nuestra nueva función global mágica
+            let avatarImg = window.getAvatarUrl(data.look_string, 'sit,wav');
             
             document.getElementById('user-avatar').src = avatarImg;
 

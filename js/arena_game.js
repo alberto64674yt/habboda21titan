@@ -166,12 +166,7 @@ const ArenaGame = {
                 document.getElementById('duel-p2-name').textContent = rivalData ? rivalData.username : 'Rival';
                 
                 if (rivalData && rivalData.look_string) {
-                    const isCustom = rivalData.look_string.includes('-');
-                    let baseP2Url = isCustom 
-                        ? `https://www.habbo.es/habbo-imaging/avatarimage?figure=${rivalData.look_string}`
-                        : `https://www.habbo.es/habbo-imaging/avatarimage?user=${rivalData.look_string}`;
-                    
-                    this.avatars.p2.src = `${baseP2Url}&action=std&direction=4&head_direction=4`;
+                    this.avatars.p2.src = window.getAvatarUrl(rivalData.look_string, 'std&direction=4&head_direction=4');
                 }
             }
             this.setupRealtime();

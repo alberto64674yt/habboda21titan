@@ -189,10 +189,11 @@ const ProfileEditor = {
         });
     },
 
-    // Guardar opción Habbo Imager
+   // Guardar opción Habbo Imager
     setupImagerSave: function() {
         document.getElementById("btn-save-imager").addEventListener("click", async () => {
             const name = document.getElementById("habbo-name-input").value.trim();
+            const hotel = document.getElementById("habbo-hotel-select").value;
             if (!name) return;
 
             const btn = document.getElementById("btn-save-imager");
@@ -200,7 +201,9 @@ const ProfileEditor = {
 
             const { data: { user } } = await db.auth.getUser();
             if (user) {
-                const { error } = await db.from('users').update({ look_string: name }).eq('id', user.id);
+                // Combinamos el hotel y el nombre (ej: "com.br:alberto")
+                const lookToSave = `${hotel}:${name}`;
+                const { error } = await db.from('users').update({ look_string: lookToSave }).eq('id', user.id);
                 if (!error) {
                     alert("¡Nombre guardado correctamente!");
                     location.reload();
