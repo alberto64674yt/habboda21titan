@@ -81,10 +81,15 @@ const ArenaGame = {
         setInterval(() => this.render(), 1000 / 60);
 
         // SISTEMA ANTI-HUIDAS
-        window.addEventListener('beforeunload', (e) => {
+        window.addEventListener('beforeunload', async (e) => {
             const arena = document.getElementById('duel-arena-section');
-            if (arena && !arena.classList.contains('hidden') && this.matchData && this.mode !== 'ia') {
-                this.abandonMatch();
+            if (arena && !arena.classList.contains('hidden') && this.matchData) {
+                // Si es contra la IA, la marcamos como terminada al huir
+                if (this.mode === 'ia') {
+                    db.from('arena_matches').update({ status: 'finished' }).eq('id', this.matchData.id).then();
+                } else if (typeof this.abandonMatch === 'function') {
+                    this.abandonMatch();
+                }
             }
         });
     },
